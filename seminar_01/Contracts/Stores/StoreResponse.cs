@@ -1,3 +1,7 @@
 ﻿namespace Contracts.Stores;
 
-public record StoreResponse(int Id, string IdentityName);
+public sealed class StoreResponse
+{
+    public int Id { get; set; }
+    public required string IdentityNumber { get; set; }
+}

@@ -1,8 +1,12 @@
-﻿using Contracts.Categories;
-using Contracts.Stores;
+﻿namespace Contracts.Products;
 
-namespace Contracts.Products;
-
-public record ProductResponse(int Id, string Name, string Description, decimal Price, string CategoryName, List<StoreResponse> Stores);
+public class ProductResponse
+{
+    public int Id { get; set; }
+    public required string Name { get; set; }
+    public decimal Price { get; set; }
+    public string? Description { get; set; }
+    public int? CategoryId { get; set; }
+}
 
 

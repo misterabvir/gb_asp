@@ -1,126 +1,90 @@
-﻿using Contracts;
+﻿using Application.Stores.Commands.Create;
+using Application.Stores.Commands.Delete;
+using Application.Stores.Commands.UpdateIdentityNumber;
+using Application.Stores.Queries.GetAll;
+using Application.Stores.Queries.GetById;
+using AutoMapper;
 using Contracts.Stores;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Persistence.Repositories.Abstractions;
-using Presentation.Extensions;
+using System.Data;
 
 namespace Presentation.Controllers;
 
 public class StoresController : BaseController
 {
-    private readonly IUnitOfWork _unitOfWork;
-    private readonly IStoreRepository _storeRepository;
-    private readonly IStockRepository _stockRepository;
+    private readonly ISender _sender;
+    private readonly IMapper _mapper;
 
     public StoresController(
-        IUnitOfWork unitOfWork,
-        IStoreRepository storeRepository,
-        IStockRepository stockRepository)
+        ISender sender,
+        IMapper mapper)
     {
-        _unitOfWork = unitOfWork;
-        _storeRepository = storeRepository;
-        _stockRepository = stockRepository;
+        _sender = sender;
+        _mapper = mapper;
     }
 
     [HttpGet]
     [Route("all")]
     public async Task<IActionResult> GetAll()
     {
-        var result = await _storeRepository.Get();
+        var result = await _sender.Send(new StoresGetAllQuery());
         if (result.IsFailure)
         {
             return ProblemResult(result.Errors);
         }
-        return Ok(result.Value!.ToResponse());
+        return Ok(result.Value!.Select(_mapper.Map<StoreResponse>));
     }
 
     [HttpGet]
-    [Route("by/{id}")]
-    public async Task<IActionResult> GetById(int id)
+    [Route("by/id/")]
+    public async Task<IActionResult> GetById([FromQuery] StoreByIdRequest request)
     {
-        var result = await _storeRepository.Get(id);
+        var query = _mapper.Map<StoresGetByIdQuery>(request)!;
+        var result = await _sender.Send(query);
         if (result.IsFailure)
-        {           
+        {
             return ProblemResult(result.Errors);
         }
-        return Ok(result.Value!.ToResponse());
+        return Ok(_mapper.Map<StoreResponse>(result.Value!));
     }
 
     [HttpPost]
     [Route("create")]
     public async Task<IActionResult> Create(StoreCreateRequest request)
     {
-        var result = await _storeRepository.Create(request.ToEntity());
+        var command = _mapper.Map<StoresCreateCommand>(request)!;
+        var result = await _sender.Send(command);
         if (result.IsFailure)
         {
             return ProblemResult(result.Errors);
         }
-        await _unitOfWork.SaveChangesAsync();
-        return Ok(result.Value!.ToResponse());
+        return Ok(_mapper.Map<StoreResponse>(result.Value!));
     }
 
     [HttpPut]
     [Route("update/identity")]
     public async Task<IActionResult> UpdateIdentityNumber(StoreUpdateIdentityNumberRequest request)
     {
-        var result = await _storeRepository.UpdateIdentityNumber(request.Id, request.IdentityNumber);
+        var command = _mapper.Map<StoresUpdateIdentityNumberCommand>(request)!;
+        var result = await _sender.Send(command);
         if (result.IsFailure)
         {
             return ProblemResult(result.Errors);
         }
-        await _unitOfWork.SaveChangesAsync();
-        return Ok(result.Value!.ToResponse());
+        return Ok(_mapper.Map<StoreResponse>(result.Value!));
     }
 
     [HttpDelete]
     [Route("delete")]
     public async Task<IActionResult> Delete(StoreDeleteRequest request)
     {
-        var result = await _storeRepository.Delete(request.Id);
+        var command = _mapper.Map<StoresDeleteCommand>(request)!;
+        var result = await _sender.Send(command);
         if (result.IsFailure)
         {
             return ProblemResult(result.Errors);
         }
-        await _unitOfWork.SaveChangesAsync();
-        return Ok(result.Value!.ToResponse());
-    }
-
-    [HttpPut]
-    [Route("import/product")]
-    public async Task<IActionResult> ImportProductToStore(StockImportRequest request)
-    {
-        var result = await _stockRepository.ImportProduct(request.ProductId, request.StoreId, request.Quantity);
-        if (result.IsFailure)
-        {
-            return ProblemResult(result.Errors);
-        }
-        await _unitOfWork.SaveChangesAsync();
-        return Ok(result.Value!.ToResponse());
-    }
-
-    [HttpPut]
-    [Route("export/product")]
-    public async Task<IActionResult> ExportProductFromStore(StockExportRequest request)
-    {
-        var result = await _stockRepository.ExportProduct(request.ProductId, request.StoreId, request.Quantity);
-        if (result.IsFailure)
-        {
-            return ProblemResult(result.Errors);
-        }
-        await _unitOfWork.SaveChangesAsync();
-        return Ok(result.Value!.ToResponse());
-    }
-
-    [HttpPut]
-    [Route("relocate/product")]
-    public async Task<IActionResult> RelocateProductBetweenStores(StockRelocateRequest request)
-    {
-        var result = await _stockRepository.RelocateProduct(request.ProductId, request.FromStoreId, request.ToStoreId, request.Quantity);
-        if (result.IsFailure)
-        {
-            return ProblemResult(result.Errors);
-        }
-        await _unitOfWork.SaveChangesAsync();
-        return Ok(result.Value!.ToResponse());
+        return Ok(_mapper.Map<StoreResponse>(result.Value!));
     }
 }

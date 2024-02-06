@@ -1,133 +1,215 @@
-﻿using Contracts.Products;
+﻿using Application.Products.Commands.Create;
+using Application.Products.Commands.Delete;
+using Application.Products.Commands.UpdateCategory;
+using Application.Products.Commands.UpdateDescription;
+using Application.Products.Commands.UpdateName;
+using Application.Products.Commands.UpdatePrice;
+using Application.Products.Queries.GetAll;
+using Application.Products.Queries.GetByCategoryId;
+using Application.Products.Queries.GetById;
+using AutoMapper;
+using Contracts.Products;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Persistence.Repositories.Abstractions;
-using Presentation.Extensions;
+using Microsoft.Extensions.Caching.Memory;
+using System.Text;
 
 namespace Presentation.Controllers;
 
-public class ProductController: BaseController
+public class ProductController : BaseController
 {
-    private readonly IUnitOfWork _unitOfWork;
-    private readonly IProductRepository _productRepository;
+    private readonly ISender _sender;
+    private readonly IMapper _mapper;
+    private readonly IMemoryCache _cache;
 
-    public ProductController(IUnitOfWork unitOfWork, IProductRepository productRepository)
+    public ProductController(ISender sender, IMapper mapper, IMemoryCache cache)
     {
-        _unitOfWork = unitOfWork;
-        _productRepository = productRepository;
+        _sender = sender;
+        _mapper = mapper;
+        _cache = cache;
+    }
+
+    [HttpGet]
+    [Route("cache_statistic")]
+    public FileContentResult GetStatistic()
+    {
+        const string textType = "text/plain";
+        const string filename = "statistic.txt";
+
+        var builder = new StringBuilder();
+        var statistic = _cache.GetCurrentStatistics() ?? new MemoryCacheStatistics();
+
+        builder.AppendLine("Statistic");
+        builder.AppendLine($"{statistic.TotalHits} hits");
+        builder.AppendLine($"{statistic.TotalMisses} misses");
+        builder.AppendLine($"{statistic.CurrentEntryCount} total");
+        builder.AppendLine($"{statistic.CurrentEstimatedSize} size");
+
+        var content = Encoding.UTF8.GetBytes(builder.ToString());
+        return File(content, textType, filename);
+    }
+
+    [HttpGet]
+    [Route("products_catalog")]
+    public async Task<FileContentResult> GetProducts()
+    {
+        const string textType = "text/csv";
+        const string filename = "products.csv";
+
+        var result = await _sender.Send(new ProductsGetAllQuery());
+        if (result.IsFailure)
+        {
+            return File(Encoding.UTF8.GetBytes(string.Empty), textType, filename);
+        }
+
+        var products = _mapper.Map<IEnumerable<ProductResponse>>(result.Value);
+
+        var builder = new StringBuilder();
+        builder.AppendLine($"Id,Name,Price,Description,CategoryId");
+        foreach (var product in products!)
+        {
+            builder.Append(product.Id.ToString() + ",");
+            builder.Append(product.Name.ToString() + ",");
+            builder.Append(product.Price.ToString() + ",");
+            builder.Append(product.Description?.ToString() ?? string.Empty + ",");
+            builder.AppendLine(product.CategoryId.ToString());
+        }
+        var content = Encoding.UTF8.GetBytes(builder.ToString());
+        return File(content, textType, filename);
     }
 
     [HttpGet]
     [Route("all")]
     public async Task<IActionResult> GetAll()
     {
-        var result = await _productRepository.Get();
+        var query = new ProductsGetAllQuery();
+        var result = await _sender.Send(query);
         if (result.IsFailure)
         {
             return ProblemResult(result.Errors);
         }
-        return Ok(result.Value!);
+        var products = result.Value!.Select(_mapper.Map<ProductResponse>).ToList()!;
+        return Ok(products);
     }
 
     [HttpGet]
-    [Route("by/{id}")]
-    public async Task<IActionResult> GetById(int id)
+    [Route("by/id/")]
+    public async Task<IActionResult> GetById([FromQuery] ProductGetByIdRequest request)
     {
-        var result = await _productRepository.Get(id);
+        var query = _mapper.Map<ProductsGetByIdQuery>(request)!;
+        var result = await _sender.Send(query);
         if (result.IsFailure)
         {
             return ProblemResult(result.Errors);
         }
-        return Ok(result.Value!.ToResponse());
+        var product = _mapper.Map<ProductResponse>(result.Value!);
+        return Ok(product);
     }
 
-
     [HttpGet]
-    [Route("all/by/category/{id}")]
-    public async Task<IActionResult> GetAllByCategoryId(int id)
+    [Route("all/by/category/")]
+    public async Task<IActionResult> GetAllByCategoryId([FromQuery] ProductGetByCategoryIdRequest request)
     {
-        var result = await _productRepository.GetByCategory(id);
+        var query = _mapper.Map<ProductsGetByCategoryIdQuery>(request)!;
+        var result = await _sender.Send(query);
         if (result.IsFailure)
         {
             return ProblemResult(result.Errors);
         }
-        return Ok(result.Value!);
+        var products = result.Value!.Select(_mapper.Map<ProductResponse>).ToList()!;
+        return Ok(products);
     }
 
     [HttpPost]
     [Route("create")]
     public async Task<IActionResult> Create(ProductCreateRequest request)
     {
-        var result = await _productRepository.Create(request.ToEntity());
+        var command = _mapper.Map<ProductsCreateCommand>(request)!;
+        var result = await _sender.Send(command);
         if (result.IsFailure)
         {
             return ProblemResult(result.Errors);
         }
-        await _unitOfWork.SaveChangesAsync();
-        return Ok(result.Value!.ToResponse());
+        var product = _mapper.Map<ProductResponse>(result.Value!);
+
+        return Ok(product);
     }
 
     [HttpPut]
     [Route("update/name")]
     public async Task<IActionResult> UpdateName(ProductUpdateNameRequest request)
     {
-        var result = await _productRepository.UpdateName(request.Id, request.Name);
+        var command = _mapper.Map<ProductsUpdateNameCommand>(request)!;
+        var result = await _sender.Send(command);
         if (result.IsFailure)
         {
             return ProblemResult(result.Errors);
         }
-        await _unitOfWork.SaveChangesAsync();
-        return Ok(result.Value!.ToResponse());
+        var product = _mapper.Map<ProductResponse>(result.Value!);
+
+        return Ok(product);
     }
 
     [HttpPut]
     [Route("update/description")]
     public async Task<IActionResult> UpdateDescription(ProductUpdateDescriptionRequest request)
     {
-        var result = await _productRepository.UpdateDescription(request.Id, request.Description);
+        var command = _mapper.Map<ProductsUpdateDescriptionCommand>(request)!;
+        var result = await _sender.Send(command);
         if (result.IsFailure)
         {
             return ProblemResult(result.Errors);
         }
-        await _unitOfWork.SaveChangesAsync();
-        return Ok(result.Value!.ToResponse());
+        var product = _mapper.Map<ProductResponse>(result.Value!);
+
+        return Ok(product);
     }
 
     [HttpPut]
     [Route("update/price")]
     public async Task<IActionResult> UpdatePrice(ProductUpdatePriceRequest request)
     {
-        var result = await _productRepository.UpdatePrice(request.Id, request.Price);
+        var command = _mapper.Map<ProductsUpdatePriceCommand>(request)!;
+        var result = await _sender.Send(command);
         if (result.IsFailure)
         {
             return ProblemResult(result.Errors);
         }
-        await _unitOfWork.SaveChangesAsync();
-        return Ok(result.Value!.ToResponse());
+        var product = _mapper.Map<ProductResponse>(result.Value!);
+
+        return Ok(product);
     }
 
     [HttpPut]
     [Route("update/category")]
     public async Task<IActionResult> UpdateCategory(ProductUpdateCategoryRequest request)
     {
-        var result = await _productRepository.UpdateCategory(request.Id, request.CategoryId);
+        var command = _mapper.Map<ProductsUpdateCategoryCommand>(request)!;
+        var result = await _sender.Send(command);
         if (result.IsFailure)
         {
             return ProblemResult(result.Errors);
         }
-        await _unitOfWork.SaveChangesAsync();
-        return Ok(result.Value!.ToResponse());
+        var product = _mapper.Map<ProductResponse>(result.Value!);
+
+
+        return Ok(product);
     }
 
     [HttpDelete]
     [Route("delete")]
     public async Task<IActionResult> Delete(ProductDeleteRequest request)
     {
-        var result = await _productRepository.Delete(request.Id);
+        var command = _mapper.Map<ProductsDeleteCommand>(request)!;
+        var result = await _sender.Send(command);
         if (result.IsFailure)
         {
             return ProblemResult(result.Errors);
         }
-        await _unitOfWork.SaveChangesAsync();
-        return Ok(result.Value!.ToResponse());
+        var product = _mapper.Map<ProductResponse>(result.Value!);
+
+        return Ok(product);
     }
+
+
 }

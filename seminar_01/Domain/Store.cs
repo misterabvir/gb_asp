@@ -6,5 +6,5 @@ public class  Store : Entity
 {
     public int Id { get; set; }
     public required string IdentityNumber { get; set; }
-    public List<Stock>? Stocks { get; set; }
+    public virtual List<Stock> Stocks { get; set; } = [];
 }
