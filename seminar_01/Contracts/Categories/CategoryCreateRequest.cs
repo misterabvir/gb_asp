@@ -1,3 +1,9 @@
-﻿namespace Contracts.Categories;
+﻿using System.Text.Json.Serialization;
 
-public record CategoryCreateRequest(string Name);
+namespace Contracts.Categories;
+
+public class CategoryCreateRequest
+{
+    [JsonPropertyName("name")] 
+    public required string Name { get; set; }
+}

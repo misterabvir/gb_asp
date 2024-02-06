@@ -1,4 +1,12 @@
-﻿namespace Contracts.Products;
+﻿using System.Text.Json.Serialization;
 
-public record ProductUpdateDescriptionRequest(int Id, string Description);
+namespace Contracts.Products;
 
+public class ProductUpdateDescriptionRequest
+{
+    [JsonPropertyName("product_id")]
+    public Guid Id { get; set; }
+
+    [JsonPropertyName("description")]
+    public string Description { get; set; } = string.Empty;
+}

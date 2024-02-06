@@ -1,3 +1,8 @@
-﻿namespace Contracts.Stores;
+﻿using System.Text.Json.Serialization;
 
-public record StoreCreateRequest(string IdentityNumber);
+namespace Contracts.Stores;
+
+public class StoreCreateRequest
+{
+    [JsonPropertyName("identity_number")] public required string IdentityNumber { get; set; }
+}

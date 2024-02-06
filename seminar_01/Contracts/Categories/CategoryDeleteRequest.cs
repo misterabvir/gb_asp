@@ -1,3 +1,9 @@
-﻿namespace Contracts.Categories;
+﻿using System.Text.Json.Serialization;
 
-public record CategoryDeleteRequest(int Id);
+namespace Contracts.Categories;
+
+public class CategoryDeleteRequest
+{
+    [JsonPropertyName("category_id")]
+    public Guid Id { get; set; }
+}

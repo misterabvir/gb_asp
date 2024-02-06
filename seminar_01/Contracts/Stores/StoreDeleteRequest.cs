@@ -1,3 +1,8 @@
-﻿namespace Contracts.Stores;
+﻿using System.Text.Json.Serialization;
 
-public record StoreDeleteRequest(int Id);
+namespace Contracts.Stores;
+
+public class StoreDeleteRequest
+{
+    [JsonPropertyName("store_id")] public Guid Id { get; set; }
+}

@@ -2,9 +2,7 @@
 
 namespace Domain;
 
-public class  Store : Entity
+public class  Store : EntityIdentity
 {
-    public int Id { get; set; }
     public required string IdentityNumber { get; set; }
-    public List<Stock>? Stocks { get; set; }
 }

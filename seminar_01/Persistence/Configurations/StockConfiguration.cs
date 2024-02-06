@@ -8,12 +8,12 @@ public class StockConfiguration : IEntityTypeConfiguration<Stock>
 {
     public void Configure(EntityTypeBuilder<Stock> builder)
     {
-        builder.ToTable("Stock");
+        builder.ToTable("Stocks");
         builder.HasKey(x => new { x.ProductId, x.StoreId });
 
         builder.Property(x => x.Quantity).IsRequired();
 
-        builder.HasOne(x => x.Product).WithMany(x=>x.Stocks).HasForeignKey(x => x.ProductId);
-        builder.HasOne(x => x.Store).WithMany(x => x.Stocks).HasForeignKey(x => x.StoreId);
+        builder.HasOne<Product>().WithMany().HasForeignKey(x => x.ProductId);
+        builder.HasOne<Store>().WithMany().HasForeignKey(x => x.StoreId);
     }
 }

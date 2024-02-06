@@ -11,7 +11,6 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
         builder.ToTable("Products");
 
         builder.HasKey(x => x.Id);
-        builder.Property(x => x.Id).ValueGeneratedOnAdd();
 
         builder.HasIndex(x => x.Name).IsUnique();
         builder.Property(x => x.Name).IsRequired().HasMaxLength(250);
@@ -20,6 +19,6 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
 
         builder.Property(x => x.Price).IsRequired();
 
-        builder.HasOne(x => x.Category).WithMany(x => x.Products).HasForeignKey(x => x.CategoryId);       
+        builder.HasOne<Category>().WithMany().HasForeignKey(x => x.CategoryId);       
     }
 }

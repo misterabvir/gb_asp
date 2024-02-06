@@ -2,11 +2,12 @@
 
 public static class ConfigurateApp
 {
-    public static WebApplication Configurate(this WebApplication app)
+    public static WebApplication ConfigurateRequestPipelines(this WebApplication app)
     {
-        return app
-            .UseSwagger()
+        app
+            .UseInDevelopeMode()
             .UsePipelines();
+        return app;
     }
 
     private static WebApplication UsePipelines(this WebApplication app)
@@ -20,7 +21,7 @@ public static class ConfigurateApp
         return app;
     }
 
-    private static WebApplication UseSwagger(this WebApplication app)
+    private static WebApplication UseInDevelopeMode(this WebApplication app)
     {
         if (app.Environment.IsDevelopment())
         {

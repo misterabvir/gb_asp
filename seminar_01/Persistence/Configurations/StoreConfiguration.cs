@@ -10,7 +10,6 @@ public class StoreConfiguration : IEntityTypeConfiguration<Store>
     {
         builder.ToTable("Stores");
         builder.HasKey(x => x.Id);
-        builder.Property(x => x.Id).ValueGeneratedOnAdd();
 
         builder.HasIndex(x => x.IdentityNumber).IsUnique();
         builder.Property(x => x.IdentityNumber).IsRequired().HasMaxLength(6);

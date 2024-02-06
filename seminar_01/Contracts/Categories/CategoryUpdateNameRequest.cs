@@ -1,3 +1,12 @@
-﻿namespace Contracts.Categories;
+﻿using System.Text.Json.Serialization;
 
-public record CategoryUpdateNameRequest(int Id, string Name);
+namespace Contracts.Categories;
+
+public class CategoryUpdateNameRequest
+{    
+    [JsonPropertyName("category_id")]
+    public Guid Id { get; set; }
+    [JsonPropertyName("name")]
+    public required string Name { get; set; }
+}
+

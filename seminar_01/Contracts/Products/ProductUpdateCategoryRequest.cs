@@ -1,4 +1,13 @@
-﻿namespace Contracts.Products;
+﻿using System.Text.Json.Serialization;
 
-public record ProductUpdateCategoryRequest(int Id, int? CategoryId = null);
+namespace Contracts.Products;
+
+public class ProductUpdateCategoryRequest
+{
+    [JsonPropertyName("product_id")]
+    public Guid Id { get; set; }
+
+    [JsonPropertyName("category_id")] 
+    public Guid? CategoryId { get; set; } = null;
+}
 

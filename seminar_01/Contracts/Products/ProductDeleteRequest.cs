@@ -1,4 +1,10 @@
-﻿namespace Contracts.Products;
+﻿using System.Text.Json.Serialization;
 
-public record ProductDeleteRequest(int Id);
+namespace Contracts.Products;
+
+public class ProductDeleteRequest
+{
+    [JsonPropertyName("product_id")] 
+    public Guid Id { get; set; }
+}
 
