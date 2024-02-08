@@ -1,0 +1,104 @@
+{
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/api/Category/{method}",
+      "DownstreamScheme": "https",
+      "SwaggerKey": "products",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "7208"
+        }
+      ],
+      "UpstreamPathTemplate": "/api/Category/{method}",
+      "UpstreamHttpMethod": [
+        "GET",
+        "POST",
+        "PUT",
+        "DELETE"
+      ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/Product/{method}",
+      "DownstreamScheme": "https",
+      "SwaggerKey": "products",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "7208"
+        }
+      ],
+      "UpstreamPathTemplate": "/api/Product/{method}",
+      "UpstreamHttpMethod": [
+        "GET",
+        "POST",
+        "PUT",
+        "DELETE"
+      ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/Stores/{method}",
+      "DownstreamScheme": "https",
+      "SwaggerKey": "stores",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "7145"
+        }
+      ],
+      "UpstreamPathTemplate": "/api/Stores/{method}",
+      "UpstreamHttpMethod": [
+        "GET",
+        "POST",
+        "PUT",
+        "DELETE"
+      ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/Stock/{method}",
+      "DownstreamScheme": "https",
+      "SwaggerKey": "stores",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "7145"
+        }
+      ],
+      "UpstreamPathTemplate": "/api/Stock/{method}",
+      "UpstreamHttpMethod": [
+        "GET",
+        "POST",
+        "PUT",
+        "DELETE"
+      ]
+    }
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": "https://localhost:7010"
+  },
+  "SwaggerEndPoints": [
+    {
+      "Key": "products",
+      "TransformByOcelotConfig": false,
+      "Config": [
+        {
+          "Name": "Products API",
+          "Version": "v1",
+          "Url": "https://localhost:7208/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "stores",
+      "TransformByOcelotConfig": false,
+      "Config": [
+        {
+          "Name": "Stores API",
+          "Version": "v1",
+          "Url": "https://localhost:7145/swagger/v1/swagger.json"
+        }
+      ]
+    }
+  ]
+
+}
