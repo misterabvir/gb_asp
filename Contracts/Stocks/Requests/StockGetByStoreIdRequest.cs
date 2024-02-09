@@ -1,3 +1,3 @@
 ﻿namespace Contracts.Stocks.Requests;
 
-public record StockGetByStoreIdRequest(Guid StoreId);
+public record StockGetByStoreIdRequest(Guid Id);

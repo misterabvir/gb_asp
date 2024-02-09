@@ -1,6 +1,7 @@
+using ExternalLinks;
+using ExternalLinks.Base;
 using GraphQlApi.Categories;
 using GraphQlApi.GraphQl;
-using GraphQlApi.Services;
 using GraphQlApi.Stocks;
 using GraphQlApi.Stores;
 
@@ -12,19 +13,18 @@ builder.Services.AddScoped<IHttpClientService, HttpClientService>();
 builder.Services
     .AddGraphQLServer()
     .AddQueryType(q => q.Name("Query"))
-    .AddMutationType(q => q.Name("Mutation"))
     .AddType<QueryProducts>()
     .AddType<QueryCategories>()
     .AddType<QueryStores>()
     .AddType<QueryStocks>()
+    .AddMutationType(q => q.Name("Mutation"))
     .AddType<MutationProducts>()
     .AddType<MutationStores>()
     .AddType<MutationStocks>()
     .AddType<MutationCategories>();
-;
+
 
 var app = builder.Build();
-
 app.MapGraphQL();
 
 

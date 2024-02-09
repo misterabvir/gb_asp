@@ -8,11 +8,13 @@ public interface IProductService
     Task<IEnumerable<ProductResponse>> GetProducts();
     Task<IEnumerable<ProductResponse>> GetProductByCategoryId(ProductGetByCategoryIdRequest request);
     Task<ProductResponse?> GetProductById(ProductGetByIdRequest request);
-    Task<Guid> CreateProduct(ProductCreateRequest request);
-    Task<bool> UpdateNameProduct(ProductUpdateNameRequest request);
-    Task<bool> UpdatePriceProduct(ProductUpdatePriceRequest request);
-    Task<bool> UpdateDescriptionProduct(ProductUpdateDescriptionRequest request);
-    Task<bool> UpdateCategoryProduct(ProductUpdateCategoryRequest request);
-    Task<bool> DeleteProduct(ProductDeleteRequest request);
+    Task<bool> IsProductExist(ProductIsExistByIdRequest request);
+    
+    Task<IResult> CreateProduct(ProductCreateRequest request);
+    Task<IResult> UpdateNameProduct(ProductUpdateNameRequest request);
+    Task<IResult> UpdatePriceProduct(ProductUpdatePriceRequest request);
+    Task<IResult> UpdateDescriptionProduct(ProductUpdateDescriptionRequest request);
+    Task<IResult> UpdateCategoryProduct(ProductUpdateCategoryRequest request);
+    Task<IResult> DeleteProduct(ProductDeleteRequest request);
 }
 

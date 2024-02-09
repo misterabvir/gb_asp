@@ -30,30 +30,26 @@ public class StoreController : ControllerBase
     }
 
     [HttpGet(template: "existing_by_id")]
-    public async Task<IActionResult> ExistingById([FromQuery] StoreGetByIdRequest request)
+    public async Task<bool> ExistingById([FromQuery] StoreIsExistByIdRequest request)
     {
-        var response = await _storeService.GetStoreById(request);
-        return Ok(response is not null);
+        return await _storeService.IsExistStoreById(request);
     }
 
     [HttpPost(template: "create")]
-    public async Task<IActionResult> Create(StoreCreateRequest request)
+    public async Task<IResult> Create(StoreCreateRequest request)
     {
-        var response = await _storeService.CreateStore(request);
-        return Ok(response);
+        return await _storeService.CreateStore(request);
     }
 
     [HttpPut(template: "update_name")]
-    public async Task<IActionResult> UpdateName(StoreUpdateNameRequest request)
+    public async Task<IResult> UpdateName(StoreUpdateNameRequest request)
     {
-        var response = await _storeService.UpdateStore(request);
-        return response ? Ok("Success") : BadRequest("Fail");
+        return await _storeService.UpdateStore(request);
     }
 
     [HttpDelete(template: "delete")]
-    public async Task<IActionResult> Delete(StoreDeleteRequest request)
+    public async Task<IResult> Delete(StoreDeleteRequest request)
     {
-        var response = await _storeService.DeleteStore(request);
-        return response ? Ok("Success") : BadRequest("Fail");
+        return await _storeService.DeleteStore(request);
     }
 }

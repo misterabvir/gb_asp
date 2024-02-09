@@ -1,6 +1,6 @@
 ﻿using Contracts.Categories.Requests;
-using GraphQlApi.Services;
-using System.Net;
+using ExternalLinks;
+using ExternalLinks.Base;
 
 namespace GraphQlApi.Categories;
 [ExtendObjectType("Mutation")]
@@ -13,12 +13,12 @@ public class MutationCategories
         _clientService = clientService;
     }
 
-    public async Task<HttpStatusCode> CreateCategory(CategoryCreateRequest request)
-        => await _clientService.Post("https://localhost:20000/product-api/categories/create", request);
+    public async Task<string> CreateCategory(CategoryCreateRequest request)
+        => await _clientService.Post(Linker.Base.Categories.Create.Url, request);
 
-    public async Task<HttpStatusCode> UpdateNameCategory(CategoryUpdateNameRequest request)
-        => await _clientService.Put("https://localhost:20000/product-api/categories/update_name", request);
+    public async Task<string> UpdateNameCategory(CategoryUpdateNameRequest request)
+        => await _clientService.Put(Linker.Base.Categories.UpdateName.Url, request);
 
-    public async Task<HttpStatusCode> DeleteCategory(CategoryDeleteRequest request)
-        => await _clientService.Delete("https://localhost:20000/product-api/categories/delete", request);
+    public async Task<string> DeleteCategory(CategoryDeleteRequest request)
+        => await _clientService.Delete(Linker.Base.Categories.Delete.Url, request);
 }

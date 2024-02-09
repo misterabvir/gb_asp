@@ -1,5 +1,6 @@
+using ExternalLinks;
+using ExternalLinks.Base;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using StoresApi.BusinessLogicalLayer.Services;
 using StoresApi.BusinessLogicalLayer.Services.Base;
 using StoresApi.DataAccessLayer.Contexts;
@@ -23,11 +24,10 @@ builder.Services.AddStackExchangeRedisCache(options => {
 });
 
 builder.Services.AddHttpClient();
-
+builder.Services.AddScoped<IHttpClientService, HttpClientService>();
 builder.Services.AddScoped<ICacheService, CacheService>();
 builder.Services.AddScoped<IStoreService, StoreService>();
-builder.Services.AddSingleton(provider => builder.Configuration.GetSection("ExternalLinks").Get<ExternalLinks>() ?? throw new Exception("ExternalLinks not found"));
-builder.Services.AddScoped<IExternalQueryService, ExternalQueryService>();
+
 
 builder.Services.AddSwaggerGen();
 

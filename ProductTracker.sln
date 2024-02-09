@@ -11,9 +11,18 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StocksApi", "StocksApi\Stoc
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OcelotApi", "OcelotApi\OcelotApi.csproj", "{062D077A-CBC3-4DC3-8CF9-D11079DB3D2C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphQlApi", "GraphQlApi\GraphQlApi.csproj", "{D19BB547-F859-4D98-8032-DDB6A39DD58F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GraphQlApi", "GraphQlApi\GraphQlApi.csproj", "{D19BB547-F859-4D98-8032-DDB6A39DD58F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contracts", "Contracts\Contracts.csproj", "{47CB8E06-EE8C-4EB3-AA2E-986C89C3B0B8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contracts", "Contracts\Contracts.csproj", "{47CB8E06-EE8C-4EB3-AA2E-986C89C3B0B8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExternalLinks", "ExternalLinks\ExternalLinks.csproj", "{91E455D9-35A1-4776-8311-C5E2B6C91092}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sln", "sln", "{604F7725-3F47-4C19-8622-69ED088E06C1}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitignore = .gitignore
+		readme.md = readme.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +54,10 @@ Global
 		{47CB8E06-EE8C-4EB3-AA2E-986C89C3B0B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{47CB8E06-EE8C-4EB3-AA2E-986C89C3B0B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{47CB8E06-EE8C-4EB3-AA2E-986C89C3B0B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{91E455D9-35A1-4776-8311-C5E2B6C91092}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91E455D9-35A1-4776-8311-C5E2B6C91092}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91E455D9-35A1-4776-8311-C5E2B6C91092}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{91E455D9-35A1-4776-8311-C5E2B6C91092}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

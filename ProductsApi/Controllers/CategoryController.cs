@@ -30,23 +30,20 @@ public class CategoryController : ControllerBase
     }
 
     [HttpPost(template: "create")]
-    public async Task<IActionResult> Create(CategoryCreateRequest request)
+    public async Task<IResult> Create(CategoryCreateRequest request)
     {
-        var response = await _categoryService.CreateCategory(request);
-        return Ok(response);
+        return await _categoryService.CreateCategory(request);
     }
 
     [HttpPut(template: "update_name")]
-    public async Task<IActionResult> UpdateName(CategoryUpdateNameRequest request)
+    public async Task<IResult> UpdateName(CategoryUpdateNameRequest request)
     {
-        var response = await _categoryService.UpdateNameCategory(request);
-        return response ? Ok("Success") : BadRequest("Fail");
+        return await _categoryService.UpdateNameCategory(request);
     }
 
     [HttpDelete(template: "delete")]
-    public async Task<IActionResult> Delete(CategoryDeleteRequest request)
+    public async Task<IResult> Delete(CategoryDeleteRequest request)
     {
-        var response = await _categoryService.DeleteCategory(request);
-        return response ? Ok("Success") : BadRequest("Fail");
+        return await _categoryService.DeleteCategory(request);
     }
 }

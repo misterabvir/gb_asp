@@ -1,6 +1,7 @@
 ﻿using Contracts.Products.Requests;
 using Contracts.Products.Responses;
-using GraphQlApi.Services;
+using ExternalLinks;
+using ExternalLinks.Base;
 
 namespace GraphQlApi.GraphQl;
 
@@ -15,11 +16,11 @@ public class QueryProducts
     }
 
     public async Task<IEnumerable<ProductResponse>?> GetAllProducts()
-        => await _clientService.Get<IEnumerable<ProductResponse>>("https://localhost:20000/product-api/products/get_all");
+        => await _clientService.Get<IEnumerable<ProductResponse>>(Linker.Base.Products.GetAll.Url);
 
     public async Task<ProductResponse?> GetProduct(ProductGetByIdRequest request)
-        => await _clientService.Get<ProductResponse>("https://localhost:20000/product-api/products/get_by_id?id=" + request.Id);
+        => await _clientService.Get<ProductResponse>(Linker.Base.Products.GetById.Url + request.Id);
 
     public async Task<IEnumerable<ProductResponse>?> GetProductsByCategory(ProductGetByCategoryIdRequest request)
-       => await _clientService.Get<IEnumerable<ProductResponse>>("https://localhost:20000/product-api/products/get_by_category_id?CategoryId=" + request.CategoryId);
+        => await _clientService.Get<IEnumerable<ProductResponse>>(Linker.Base.Products.GetByCategory.Url + request.CategoryId);
 }

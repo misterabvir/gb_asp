@@ -1,10 +1,13 @@
 # Разработка web-приложения на C# (семинары)
 
-## Урок 1. ASP.NET база
+## Урок 3. GraphQL и микросервисная архитектура
 
-![Alt text](./images/seminar_01.png "a title")
 
-# Разработка web-приложения на C# (семинары)
+### Ocelot
 
-## Урок 2. Работа с данными (CSV + статика), маппинг и кэширование
+![Alt text](./images/demo2.gif "a title")
+
+###  GraphQL
+
+![Alt text](./images/demo.gif "a title")
 

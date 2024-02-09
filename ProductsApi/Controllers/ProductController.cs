@@ -36,55 +36,47 @@ public class ProductController : ControllerBase
         return Ok(response);
     }
 
-
     [HttpGet(template: "existing_by_id")]
-    public async Task<IActionResult> ExistingById([FromQuery] ProductGetByIdRequest request)
+    public async Task<bool> ExistingById([FromQuery] ProductIsExistByIdRequest request)
     {
-        var response = await _productService.GetProductById(request);
-        return Ok(response is not null);
+        return await _productService.IsProductExist(request);
     }
 
     [HttpPost(template: "create")]
-    public async Task<IActionResult> Create(ProductCreateRequest request)
+    public async Task<IResult> Create(ProductCreateRequest request)
     {
-        var response = await _productService.CreateProduct(request);
-        return Ok(response);
+        return await _productService.CreateProduct(request);
     }
 
     [HttpPut(template: "update_name")]
-    public async Task<IActionResult> UpdateName(ProductUpdateNameRequest request)
+    public async Task<IResult> UpdateName(ProductUpdateNameRequest request)
     {
-        var response = await _productService.UpdateNameProduct(request);
-        return response ? Ok("Success") : BadRequest("Fail");
+        return await _productService.UpdateNameProduct(request);
     }
 
     [HttpPut(template: "update_description")]
-    public async Task<IActionResult> UpdateDescription(ProductUpdateDescriptionRequest request)
+    public async Task<IResult> UpdateDescription(ProductUpdateDescriptionRequest request)
     {
-        var response = await _productService.UpdateDescriptionProduct(request);
-        return response ? Ok("Success") : BadRequest("Fail");
+        return await _productService.UpdateDescriptionProduct(request);
     }
 
 
     [HttpPut(template: "update_price")]
-    public async Task<IActionResult> UpdatePrice(ProductUpdatePriceRequest request)
+    public async Task<IResult> UpdatePrice(ProductUpdatePriceRequest request)
     {
-        var response = await _productService.UpdatePriceProduct(request);
-        return response ? Ok("Success") : BadRequest("Fail");
+        return await _productService.UpdatePriceProduct(request);
     }
 
     [HttpPut(template: "update_category")]
-    public async Task<IActionResult> UpdateCategory(ProductUpdateCategoryRequest request)
+    public async Task<IResult> UpdateCategory(ProductUpdateCategoryRequest request)
     {
-        var response = await _productService.UpdateCategoryProduct(request);
-        return response ? Ok("Success") : BadRequest("Fail");
+        return await _productService.UpdateCategoryProduct(request);
     }
 
 
     [HttpDelete(template: "delete")]
-    public async Task<IActionResult> Delete(ProductDeleteRequest request)
+    public async Task<IResult> Delete(ProductDeleteRequest request)
     {
-        var response = await _productService.DeleteProduct(request);
-        return response ? Ok("Success") : BadRequest("Fail");
+        return await _productService.DeleteProduct(request);
     }
 }

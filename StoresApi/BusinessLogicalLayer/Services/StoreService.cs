@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Contracts.Stores.Requests;
 using Contracts.Stores.Responses;
+using ExternalLinks;
+using ExternalLinks.Base;
 using Microsoft.EntityFrameworkCore;
 using StoresApi.BusinessLogicalLayer.Services.Base;
 using StoresApi.DataAccessLayer.Contexts;
@@ -14,15 +16,15 @@ public class StoreService : IStoreService
     private const string STORES = "stores";
     private readonly ICacheService _cache;
     private readonly StoresContext _context;
-    private readonly IExternalQueryService _queryService;
+    private readonly IHttpClientService _query;
     private readonly IMapper _mapper;
 
-    public StoreService(ICacheService cache, StoresContext context, IMapper mapper, IExternalQueryService queryService)
+    public StoreService(ICacheService cache, StoresContext context, IMapper mapper, IHttpClientService query)
     {
         _cache = cache;
         _context = context;
         _mapper = mapper;
-        _queryService = queryService;
+        _query = query;
     }
     public async Task<IEnumerable<StoreResponse>> GetStores()
     {
@@ -51,45 +53,56 @@ public class StoreService : IStoreService
         return response;
     }
 
-    public async Task<Guid> CreateStore(StoreCreateRequest request)
+    public async Task<bool> IsExistStoreById(StoreIsExistByIdRequest request)
+    {
+        StoreResponse? response = await _cache.Get<StoreResponse>(STORE + request.Id);
+        if (response is not null)
+        {
+            return true;
+        }
+        var store = await _context.Stores.AsNoTracking().FirstOrDefaultAsync(c => c.Id == request.Id);
+        return store is not null;
+    }
+
+    public async Task<IResult> CreateStore(StoreCreateRequest request)
     {
         var stores = _mapper.Map<Store>(request);
         await _context.Stores.AddAsync(stores);
         await _context.SaveChangesAsync();
         await _cache.Remove(STORES);
-        return stores.Id;
+        return Results.Ok(stores.Id);
     }
 
-    public async Task<bool> UpdateStore(StoreUpdateNameRequest request)
+    public async Task<IResult> UpdateStore(StoreUpdateNameRequest request)
     {
         var store = await _context.Stores.FirstOrDefaultAsync(c => c.Id == request.Id);
         if (store is null)
         {
-            return false;
+            return Results.NotFound($"Not found store with id: {request.Id}!"); 
         }
 
         store.Name = request.Name;
         await _context.SaveChangesAsync();
         await _cache.Remove(STORES);
         await _cache.Remove(STORE + request.Id);
-        return true;
+        return Results.Ok();
     }
-    public async Task<bool> DeleteStore(StoreDeleteRequest request)
+    public async Task<IResult> DeleteStore(StoreDeleteRequest request)
     {
-        if (await _queryService.IsStockExist(request.Id))
+        if (await _query.Get<bool>(Linker.Base.Stocks.ExistingByStoreId.Url + request.Id))
         {
-            return false;
+            return Results.BadRequest("Can't delete store with stock!");
         }
 
         var store = await _context.Stores.FirstOrDefaultAsync(c => c.Id == request.Id);
         if (store is null)
         {
-            return false;
+            return Results.NotFound($"Not found store with id: {request.Id}!");
         }
         _context.Remove(store);
         await _context.SaveChangesAsync();
         await _cache.Remove(STORES);
         await _cache.Remove(STORE + request.Id);
-        return true;
+        return Results.Ok();
     }
 }

@@ -1,6 +1,6 @@
 ﻿using Contracts.Stocks.Requests;
-using GraphQlApi.Services;
-using System.Net;
+using ExternalLinks;
+using ExternalLinks.Base;
 
 namespace GraphQlApi.Stocks;
 
@@ -14,14 +14,14 @@ public class MutationStocks
         _clientService = clientService;
     }
 
-    public async Task<HttpStatusCode> ImportToStore(StockImportToStoreRequest request)
-        => await _clientService.Put("https://localhost:20000/stocks-api/stocks/import_to_store", request);
+    public async Task<string> ImportToStore(StockImportToStoreRequest request)
+        => await _clientService.Put(Linker.Base.Stocks.ImportToStore.Url, request);
 
-    public async Task<HttpStatusCode> ExportFromStore(StockExportFromStoreRequest request)
-        => await _clientService.Put("https://localhost:20000/stocks-api/stocks/export_from_store", request);
+    public async Task<string> ExportFromStore(StockExportFromStoreRequest request)
+        => await _clientService.Put(Linker.Base.Stocks.ExportFromStore.Url, request);
 
-    public async Task<HttpStatusCode> ExchangeBetweenStores(StockExchangeBetweenStoresRequest request)
-        => await _clientService.Put("https://localhost:20000/stocks-api/stocks/exchange_between_stores", request);
+    public async Task<string> ExchangeBetweenStores(StockExchangeBetweenStoresRequest request)
+        => await _clientService.Put(Linker.Base.Stocks.ExchangeBetweenStores.Url, request);
 }
 
 

@@ -7,7 +7,8 @@ public interface IStoreService
 {
     Task<IEnumerable<StoreResponse>> GetStores();
     Task<StoreResponse> GetStoreById(StoreGetByIdRequest request);
-    Task<Guid> CreateStore(StoreCreateRequest request);
-    Task<bool> UpdateStore(StoreUpdateNameRequest request);
-    Task<bool> DeleteStore(StoreDeleteRequest request);
+    Task<bool> IsExistStoreById(StoreIsExistByIdRequest request);
+    Task<IResult> CreateStore(StoreCreateRequest request);
+    Task<IResult> UpdateStore(StoreUpdateNameRequest request);
+    Task<IResult> DeleteStore(StoreDeleteRequest request);
 }

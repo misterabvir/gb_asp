@@ -14,14 +14,12 @@ public class CategoryService : ICategoryService
     private const string CATEGORY = "category_";
     private readonly ICacheService _cache;
     private readonly ProductsContext _context;
-    private readonly HttpClient _client;
     private readonly IMapper _mapper;
 
-    public CategoryService(ICacheService cache, ProductsContext context, HttpClient client, IMapper mapper)
+    public CategoryService(ICacheService cache, ProductsContext context, IMapper mapper)
     {
         _cache = cache;
         _context = context;
-        _client = client;
         _mapper = mapper;
     }
 
@@ -53,46 +51,46 @@ public class CategoryService : ICategoryService
         return response;
     }
 
-    public async Task<Guid> CreateCategory(CategoryCreateRequest request)
+    public async Task<IResult> CreateCategory(CategoryCreateRequest request)
     {
         var category = _mapper.Map<Category>(request);
         await _context.Categories.AddAsync(category);
         await _context.SaveChangesAsync();
         await _cache.Remove(CATEGORIES);
-        return category.Id;
+        return Results.Ok(category.Id);
     }
 
-    public async Task<bool> UpdateNameCategory(CategoryUpdateNameRequest request)
+    public async Task<IResult> UpdateNameCategory(CategoryUpdateNameRequest request)
     {
         var category = await _context.Categories.FirstOrDefaultAsync(c => c.Id == request.Id);
         if (category is null)
         {
-            return false;
+            return Results.NotFound($"Not found category with id {request.Id} in database");
         }
 
         category.Name = request.Name;
         await _context.SaveChangesAsync();
         await _cache.Remove(CATEGORIES);
         await _cache.Remove(CATEGORY + request.Id);
-        return true;
+        return Results.Ok();
     }
-    public async Task<bool> DeleteCategory(CategoryDeleteRequest request)
+    public async Task<IResult> DeleteCategory(CategoryDeleteRequest request)
     {
         if (await _context.Products.AnyAsync(p => p.CategoryId == request.Id))
         {
-            return false;
+            return Results.BadRequest("Category has products");
         }
 
         var category = await _context.Categories.FirstOrDefaultAsync(c => c.Id == request.Id);
         if (category is null)
         {
-            return false;
+            return Results.NotFound($"Not found category with id {request.Id} in database");
         }
         _context.Remove(category);
         await _context.SaveChangesAsync();
 
         await _cache.Remove(CATEGORIES);
         await _cache.Remove(CATEGORY + request.Id);
-        return true;
+        return Results.Ok();
     }
 }

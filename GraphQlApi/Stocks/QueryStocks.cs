@@ -1,6 +1,7 @@
 ﻿using Contracts.Stocks.Requests;
 using Contracts.Stocks.Responses;
-using GraphQlApi.Services;
+using ExternalLinks;
+using ExternalLinks.Base;
 
 namespace GraphQlApi.Stocks;
 
@@ -15,10 +16,10 @@ public class QueryStocks
     }
 
     public async Task<IEnumerable<StockResponse>?> GetStocksByProductId(StockGetByProductIdRequest request)
-    => await _clientService.Get<IEnumerable<StockResponse>>("https://localhost:20000/stocks-api/stocks/get_by_product_id?ProductId=" + request.ProductId);
+    => await _clientService.Get<IEnumerable<StockResponse>>(Linker.Base.Stocks.GetByProduct.Url + request.Id);
 
     public async Task<IEnumerable<StockResponse>?> GetStocksByStoreId(StockGetByStoreIdRequest request)
-        => await _clientService.Get<IEnumerable<StockResponse>>("https://localhost:20000/stocks-api/stocks/get_by_store_id?StoreId=" + request.StoreId);
+        => await _clientService.Get<IEnumerable<StockResponse>>(Linker.Base.Stocks.GetByStore.Url + request.Id);
 }
 
 

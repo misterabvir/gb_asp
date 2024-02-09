@@ -1,6 +1,7 @@
 ﻿using Contracts.Categories.Requests;
 using Contracts.Categories.Responses;
-using GraphQlApi.Services;
+using ExternalLinks;
+using ExternalLinks.Base;
 
 namespace GraphQlApi.Categories;
 
@@ -15,8 +16,8 @@ public class QueryCategories
     }
 
     public async Task<IEnumerable<CategoryResponse>?> GetAllCategories()
-    => await _clientService.Get<IEnumerable<CategoryResponse>>("https://localhost:20000/product-api/categories/get_all");
+    => await _clientService.Get<IEnumerable<CategoryResponse>>(Linker.Base.Categories.GetAll.Url);
 
     public async Task<CategoryResponse?> GetCategory(CategoryGetByIdRequest request)
-        => await _clientService.Get<CategoryResponse>("https://localhost:20000/product-api/categories/get_by_id?id=" + request.Id);
+        => await _clientService.Get<CategoryResponse>(Linker.Base.Categories.GetById.Url + request.Id);
 }

@@ -30,38 +30,36 @@ public class StockController : ControllerBase
     }
 
     [HttpGet(template: "existing_by_product_id")]
-    public async Task<IActionResult> ExistingStocksByProductId([FromQuery] StockGetByProductIdRequest request)
+    public async Task<bool> ExistingStocksByProductId([FromQuery] StockIsExistByProductIdRequest request)
     {
-        var response = await _stockService.GetStocksByProductId(request);
-        return Ok(response is not null && response.Any(s=>s.ProductId == request.ProductId));
+        return await _stockService.IsExistStocksByProductId(request);
     }
 
     [HttpGet(template: "existing_by_store_id")]
-    public async Task<IActionResult> ExistingStocksByStoreId([FromQuery] StockGetByStoreIdRequest request)
+    public async Task<bool> ExistingStocksByStoreId([FromQuery] StockIsExistByStoreIdRequest request)
     {
-        var response = await _stockService.GetStocksByStoreId(request);
-        return Ok(response is not null && response.Any(s=>s.StoreId == request.StoreId));
+        return await _stockService.IsExistStocksByStoreId(request);
     }
 
     [HttpPut(template: "export_from_store")]
-    public async Task<IActionResult> ExportFromStore(StockExportFromStoreRequest request)
+    public async Task<IResult> ExportFromStore(StockExportFromStoreRequest request)
     {
         var response = await _stockService.ExportFromStore(request);
-        return response ? Ok("Success") : BadRequest("Failed");
+        return response;
     }
 
     [HttpPut(template: "import_to_store")]
-    public async Task<IActionResult> ImportToStore(StockImportToStoreRequest request)
+    public async Task<IResult> ImportToStore(StockImportToStoreRequest request)
     {
         var response = await _stockService.ImportToStore(request);
-        return response ? Ok("Success") : BadRequest("Failed");
+        return response;
     }
 
     [HttpPut(template: "exchange_between_stores")]
-    public async Task<IActionResult> ExchangeBetweenStores(StockExchangeBetweenStoresRequest request)
+    public async Task<IResult> ExchangeBetweenStores(StockExchangeBetweenStoresRequest request)
     {
         var response = await _stockService.ExchangeBetweenStores(request);
-        return response ? Ok("Success") : BadRequest("Failed");
+        return response;
     }
 
 }
