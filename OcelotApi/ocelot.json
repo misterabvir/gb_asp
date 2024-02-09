@@ -1,0 +1,97 @@
+{
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/product-api/{method}",
+      "DownstreamScheme": "https",
+      "SwaggerKey": "products",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 16000
+        }
+      ],
+      "UpstreamPathTemplate": "/product-api/{method}",
+      "UpstreamHttpMethod": [
+        "GET",
+        "POST",
+        "PUT",
+        "DELETE"
+      ]
+    },
+    {
+      "DownstreamPathTemplate": "/stores-api/{method}",
+      "DownstreamScheme": "https",
+      "SwaggerKey": "stores",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 17000
+        }
+      ],
+      "UpstreamPathTemplate": "/stores-api/{method}",
+      "UpstreamHttpMethod": [
+        "GET",
+        "POST",
+        "PUT",
+        "DELETE"
+      ]
+    },
+    {
+      "DownstreamPathTemplate": "/stocks-api/{method}",
+      "DownstreamScheme": "https",
+      "SwaggerKey": "stocks",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 18000
+        }
+      ],
+      "UpstreamPathTemplate": "/stocks-api/{method}",
+      "UpstreamHttpMethod": [
+        "GET",
+        "POST",
+        "PUT",
+        "DELETE"
+      ]
+    }
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": "https://localhost:20000"
+  },
+  "SwaggerEndPoints": [
+    {
+      "Key": "products",
+      "TransformByOcelotConfig": false,
+      "Config": [
+        {
+          "Name": "Products API",
+          "Version": "v1",
+          "Url": "https://localhost:16000/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "stores",
+      "TransformByOcelotConfig": false,
+      "Config": [
+        {
+          "Name": "Stores API",
+          "Version": "v1",
+          "Url": "https://localhost:17000/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "stocks",
+      "TransformByOcelotConfig": false,
+      "Config": [
+        {
+          "Name": "Stocks API",
+          "Version": "v1",
+          "Url": "https://localhost:18000/swagger/v1/swagger.json"
+        }
+      ]
+    }
+
+  ]
+}
