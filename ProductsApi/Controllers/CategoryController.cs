@@ -1,4 +1,5 @@
 ﻿using Contracts.Categories.Requests;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProductsApi.BusinessLogicalLayer.Services.Base;
 
@@ -14,7 +15,7 @@ public class CategoryController : ControllerBase
     {
         _categoryService = categoryService;
     }
-
+    [AllowAnonymous]
     [HttpGet(template:"get_all")]
     public async Task<IActionResult> GetAll()
     {
@@ -22,6 +23,7 @@ public class CategoryController : ControllerBase
         return Ok(response);
     }
 
+    [Authorize]
     [HttpGet(template: "get_by_id")]
     public async Task<IActionResult> GetById([FromQuery] CategoryGetByIdRequest request)
     {
@@ -29,18 +31,21 @@ public class CategoryController : ControllerBase
         return Ok(response);
     }
 
-    [HttpPost(template: "create")]
+    [Authorize]
+    [HttpPost]
     public async Task<IResult> Create(CategoryCreateRequest request)
     {
         return await _categoryService.CreateCategory(request);
     }
 
+    [Authorize]
     [HttpPut(template: "update_name")]
     public async Task<IResult> UpdateName(CategoryUpdateNameRequest request)
     {
         return await _categoryService.UpdateNameCategory(request);
     }
 
+    [Authorize]
     [HttpDelete(template: "delete")]
     public async Task<IResult> Delete(CategoryDeleteRequest request)
     {

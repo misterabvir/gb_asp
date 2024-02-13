@@ -1,0 +1,43 @@
+version: '3.4'
+
+services:
+  ocelotapi:
+    image: ${DOCKER_REGISTRY-}ocelotapi
+    build:
+      context: .
+      dockerfile: OcelotApi/Dockerfile
+    networks:
+      - market_net
+  usersapi:
+    image: ${DOCKER_REGISTRY-}usersapi
+    build:
+      context: .
+      dockerfile: UsersApi/Dockerfile
+    networks:
+      - market_net  
+  productsapi:
+    image: ${DOCKER_REGISTRY-}productsapi
+    build:
+      context: .
+      dockerfile: ProductsApi/Dockerfile
+    networks:
+      - market_net  
+  storesapi:
+    image: ${DOCKER_REGISTRY-}storesapi
+    build:
+      context: .
+      dockerfile: StoresApi/Dockerfile
+    networks:
+      - market_net 
+  stocksapi:
+    image: ${DOCKER_REGISTRY-}stocksapi
+    build:
+      context: .
+      dockerfile: StocksApi/Dockerfile
+    networks:
+      - market_net 
+
+networks:
+  market_net:
+    external:
+      name: market_net

@@ -1,4 +1,5 @@
 using ExternalLinks;
+using TokenManager;
 using ExternalLinks.Base;
 using Microsoft.EntityFrameworkCore;
 using StocksApi.BusinessLogicalLayer.Services;
@@ -18,7 +19,8 @@ builder.Services.AddDbContext<StocksContext>(options =>
 });
 
 //cache
-builder.Services.AddStackExchangeRedisCache(options => {
+builder.Services.AddStackExchangeRedisCache(options =>
+{
     options.Configuration = builder.Configuration.GetConnectionString("RedisConnection");
     options.InstanceName = "StocksApi";
 });
@@ -30,19 +32,19 @@ builder.Services.AddScoped<ICacheService, CacheService>();
 builder.Services.AddScoped<IStockService, StockService>();
 
 
-builder.Services.AddSwaggerGen();
+builder.Services.AddTokenManager(builder.Configuration);
 
 builder.Services.AddControllers();
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
 
-app.UseHttpsRedirection();
+app.UseSwagger();
+app.UseSwaggerUI();
+
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllers();
 

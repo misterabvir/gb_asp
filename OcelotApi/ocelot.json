@@ -1,13 +1,31 @@
 {
   "Routes": [
     {
+      "DownstreamPathTemplate": "/users-api/{method}",
+      "DownstreamScheme": "http",
+      "SwaggerKey": "users",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "usersapi",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/users-api/{method}",
+      "UpstreamHttpMethod": [
+        "GET",
+        "POST",
+        "PUT",
+        "DELETE"
+      ]
+    },
+    {
       "DownstreamPathTemplate": "/product-api/{method}",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "SwaggerKey": "products",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 16000
+          "Host": "productsapi",
+          "Port": 8080
         }
       ],
       "UpstreamPathTemplate": "/product-api/{method}",
@@ -20,12 +38,12 @@
     },
     {
       "DownstreamPathTemplate": "/stores-api/{method}",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "SwaggerKey": "stores",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 17000
+          "Host": "storesapi",
+          "Port": 8080
         }
       ],
       "UpstreamPathTemplate": "/stores-api/{method}",
@@ -38,12 +56,12 @@
     },
     {
       "DownstreamPathTemplate": "/stocks-api/{method}",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "SwaggerKey": "stocks",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 18000
+          "Host": "stocksapi",
+          "Port": 8080
         }
       ],
       "UpstreamPathTemplate": "/stocks-api/{method}",
@@ -56,9 +74,21 @@
     }
   ],
   "GlobalConfiguration": {
-    "BaseUrl": "https://localhost:20000"
+    "BaseUrl": "http://ocelotapi:8080"
   },
+
   "SwaggerEndPoints": [
+    {
+      "Key": "users",
+      "TransformByOcelotConfig": false,
+      "Config": [
+        {
+          "Name": "Users API",
+          "Version": "v1",
+          "Url": "http://172.18.0.5:8080/swagger/v1/swagger.json"
+        }
+      ]
+    },
     {
       "Key": "products",
       "TransformByOcelotConfig": false,
@@ -66,7 +96,7 @@
         {
           "Name": "Products API",
           "Version": "v1",
-          "Url": "https://localhost:16000/swagger/v1/swagger.json"
+          "Url": "http://productsapi:8080/swagger/v1/swagger.json"
         }
       ]
     },
@@ -77,7 +107,7 @@
         {
           "Name": "Stores API",
           "Version": "v1",
-          "Url": "https://localhost:17000/swagger/v1/swagger.json"
+          "Url": "http://storesapi:8080/swagger/v1/swagger.json"
         }
       ]
     },
@@ -88,7 +118,7 @@
         {
           "Name": "Stocks API",
           "Version": "v1",
-          "Url": "https://localhost:18000/swagger/v1/swagger.json"
+          "Url": "http://stocksapi:8080/swagger/v1/swagger.json"
         }
       ]
     }

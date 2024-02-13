@@ -1,3 +1,4 @@
+using TokenManager;
 using ExternalLinks;
 using ExternalLinks.Base;
 using Microsoft.EntityFrameworkCore;
@@ -8,17 +9,15 @@ using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//automapper
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
-//Db
 builder.Services.AddDbContext<StoresContext>(options =>
 {
     options.UseNpgsql(builder.Configuration.GetConnectionString("DataBaseConnection"));
 });
 
-//cache
-builder.Services.AddStackExchangeRedisCache(options => {
+builder.Services.AddStackExchangeRedisCache(options =>
+{
     options.Configuration = builder.Configuration.GetConnectionString("RedisConnection");
     options.InstanceName = "StoresApi";
 });
@@ -29,19 +28,19 @@ builder.Services.AddScoped<ICacheService, CacheService>();
 builder.Services.AddScoped<IStoreService, StoreService>();
 
 
-builder.Services.AddSwaggerGen();
+builder.Services.AddTokenManager(builder.Configuration);
 
 builder.Services.AddControllers();
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseAuthentication();
+app.UseAuthorization();
 
-app.UseHttpsRedirection();
+app.UseSwagger();
+app.UseSwaggerUI();
+
+
 
 app.MapControllers();
 

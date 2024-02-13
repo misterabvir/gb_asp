@@ -1,4 +1,5 @@
 ﻿using Contracts.Stores.Requests;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StoresApi.BusinessLogicalLayer.Services.Base;
 
@@ -15,13 +16,14 @@ public class StoreController : ControllerBase
         _storeService = storeService;
     }
 
+    [AllowAnonymous]
     [HttpGet(template: "get_all")]
     public async Task<IActionResult> GetAll()
     {
         var response = await _storeService.GetStores();
         return Ok(response);
     }
-
+    [Authorize]
     [HttpGet(template: "get_by_id")]
     public async Task<IActionResult> GetById([FromQuery] StoreGetByIdRequest request)
     {
@@ -35,18 +37,21 @@ public class StoreController : ControllerBase
         return await _storeService.IsExistStoreById(request);
     }
 
+    [Authorize]
     [HttpPost(template: "create")]
     public async Task<IResult> Create(StoreCreateRequest request)
     {
         return await _storeService.CreateStore(request);
     }
 
+    [Authorize]
     [HttpPut(template: "update_name")]
     public async Task<IResult> UpdateName(StoreUpdateNameRequest request)
     {
         return await _storeService.UpdateStore(request);
     }
 
+    [Authorize]
     [HttpDelete(template: "delete")]
     public async Task<IResult> Delete(StoreDeleteRequest request)
     {

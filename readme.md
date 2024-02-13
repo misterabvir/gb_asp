@@ -1,13 +1,13 @@
 # Разработка web-приложения на C# (семинары)
 
-## Урок 3. GraphQL и микросервисная архитектура
+## Урок 4. Безопасность и контейнеризация приложений
+
+### Docker
+![Alt text](./images/docker.png "a title")
 
 
 ### Ocelot
 
-![Alt text](./images/demo2.gif "a title")
+![Alt text](./images/demo3.gif "a title")
 
-###  GraphQL
-
-![Alt text](./images/demo.gif "a title")
 

@@ -8,7 +8,7 @@ public class Linker
         Url = address;
     }
 
-    public static Linker Base => new("https://localhost:20000/");
+    public static Linker Base => new("http://ocelotapi:8080/");
     public Linker Products
     {
         get

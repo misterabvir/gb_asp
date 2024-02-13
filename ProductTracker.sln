@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GraphQlApi", "GraphQlApi\Gr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contracts", "Contracts\Contracts.csproj", "{47CB8E06-EE8C-4EB3-AA2E-986C89C3B0B8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExternalLinks", "ExternalLinks\ExternalLinks.csproj", "{91E455D9-35A1-4776-8311-C5E2B6C91092}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExternalLinks", "ExternalLinks\ExternalLinks.csproj", "{91E455D9-35A1-4776-8311-C5E2B6C91092}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sln", "sln", "{604F7725-3F47-4C19-8622-69ED088E06C1}"
 	ProjectSection(SolutionItems) = preProject
@@ -23,6 +23,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sln", "sln", "{604F7725-3F4
 		.gitignore = .gitignore
 		readme.md = readme.md
 	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UsersApi", "UsersApi\UsersApi.csproj", "{A0495FD9-EDA3-4A16-97C7-D4D859E926EF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TokenManager", "TokenManager\TokenManager.csproj", "{062A4C19-EBF1-41B2-814F-AB1B3FAD83B4}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{F985BF54-A392-4777-88B4-09ABD5E397B3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -58,6 +64,18 @@ Global
 		{91E455D9-35A1-4776-8311-C5E2B6C91092}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{91E455D9-35A1-4776-8311-C5E2B6C91092}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{91E455D9-35A1-4776-8311-C5E2B6C91092}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A0495FD9-EDA3-4A16-97C7-D4D859E926EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0495FD9-EDA3-4A16-97C7-D4D859E926EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0495FD9-EDA3-4A16-97C7-D4D859E926EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0495FD9-EDA3-4A16-97C7-D4D859E926EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{062A4C19-EBF1-41B2-814F-AB1B3FAD83B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{062A4C19-EBF1-41B2-814F-AB1B3FAD83B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{062A4C19-EBF1-41B2-814F-AB1B3FAD83B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{062A4C19-EBF1-41B2-814F-AB1B3FAD83B4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F985BF54-A392-4777-88B4-09ABD5E397B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F985BF54-A392-4777-88B4-09ABD5E397B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F985BF54-A392-4777-88B4-09ABD5E397B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F985BF54-A392-4777-88B4-09ABD5E397B3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
